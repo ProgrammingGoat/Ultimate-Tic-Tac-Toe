@@ -1,13 +1,11 @@
 class TicTacToe():
-    active_player = 0
-    is_won = False
-
-    grid = [[None, None, None],
-            [None, None, None],
-            [None, None, None]]
 
     def __init__(self):
-        pass
+        self.active_player = 0
+        self.is_won = False
+        self.grid = [[None, None, None],
+            [None, None, None],
+            [None, None, None]]
 
     def switch_player(self):
         # 0 ~= X, 1 ~= O
@@ -53,6 +51,3 @@ class TicTacToe():
             winner = self.check_line(diag)
             if winner is not None:
                 return winner
-        
-# singleton instance
-tictactoe = TicTacToe()
