@@ -6,7 +6,7 @@ import toga
 from toga.constants import RED, TRANSPARENT
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
-from .tictactoe import tictactoe
+from .tictactoe import TicTacToe
 
 
 class UltimateTicTacToe(toga.App):
@@ -18,17 +18,30 @@ class UltimateTicTacToe(toga.App):
         show the main window.
         """
 
+        # game objects
+        main_game = TicTacToe()
+        subgames = []
+        for i in range(3):
+             subgames.append([])
+             for j in range(3):
+                  subgames[i].append(TicTacToe())
+
         main_box = toga.Box(style=Pack(direction=COLUMN))
 
         # Button Handlers
-        def press_button(button: toga.Button, i, j):
-                    player = tictactoe.play(i, j)
+        def press_button(button: toga.Button, i, j, k, l):
+                    player = subgames[i][j].play(k, l)
+                    print(subgames[i][j])
+                    print(subgames[i][j].grid)
                     if player is not None:
                         button.text = player
-                        win = tictactoe.determine_victory()
+                        win = subgames[i][j].determine_victory()
                         if win is not None:
-                            self.main_window.info_dialog("Victory!", f"Player {win} wins!")
-                    print(tictactoe.grid)
+                            main_game.play(i, j, 0 if player == "X" else 1)
+                            big_win = main_game.determine_victory()
+                            print(main_game.grid)
+                            if big_win is not None:
+                                 self.main_window.info_dialog("Somebody won!", "Somebody won!")
 
         # Game info
         game_info_box = toga.Box()
@@ -51,7 +64,7 @@ class UltimateTicTacToe(toga.App):
                     column.add(button_row)
                     for l in range(3):
                         button = toga.Button(
-                            on_press=lambda widget, i=i, j=j: press_button(widget, i, j),
+                            on_press=lambda widget, i=i, j=j, k=k, l=l: press_button(widget, i, j, k, l),
                             style=Pack(width=50, height=50))
                         button_row.add(button)
                 row.add(column)
