@@ -10,8 +10,8 @@ author_email = "brackmann.lukas@gmail.com"
 
 [tool.briefcase.app.ultimatetictactoe]
 formal_name = "Ultimate Tic Tac Toe"
-description = "Tic Tac Toe within Tic Tac Toe"
-long_description = """More details about the app should go here.
+description = "Tic Tac Toe within Tic Tac Toe!"
+long_description = """An extended version of tic tac toe in which you play on multiple boards at the same time.
 """
 
 icon = "icons/tictactoe"
