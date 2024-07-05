@@ -1,7 +1,18 @@
 from .tictactoe import TicTacToe
 
 class Game():
-    def __init__(self):
+    # def __init__(self):
+    #     self.active_player = 0
+    #     self.main_game = TicTacToe()
+    #     self.subgames = []
+    #     self.next_move = (None, None)
+    #     self.completed_squares = []
+    #     for i in range(3):
+    #          self.subgames.append([])
+    #          for j in range(3):
+    #               self.subgames[i].append(TicTacToe())
+
+    def start(self):
         self.active_player = 0
         self.main_game = TicTacToe()
         self.subgames = []
