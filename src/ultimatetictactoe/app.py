@@ -7,11 +7,6 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 from .game import game
 
-import logging
-
-logger = logging.getLogger(__name__)
-
-
 class UltimateTicTacToe(toga.App):
     def startup(self):
         """Construct and show the Toga application.
@@ -20,9 +15,6 @@ class UltimateTicTacToe(toga.App):
         We then create a main window (with a name matching the app), and
         show the main window.
         """
-
-        # logging setup
-        logging.basicConfig(filename=self.paths.logs / "tictactoe.log", level=logging.INFO)
 
         main_box = toga.Box(style=Pack(direction=COLUMN))
 
