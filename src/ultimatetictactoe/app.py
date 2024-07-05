@@ -94,16 +94,12 @@ class UltimateTicTacToe(toga.App):
         placed, subgame_win, board_win = game.play(i, j, k, l)
         if placed:
             button.text = placed
-            logger.info(f"Player {placed} played in {i}/{j} {k}/{l}")
-            logger.info(f"Grid: {game.subgames[i][j].grid}")
             if subgame_win is not None:
-                logger.info(f"Player {placed} wins grid {i}/{j}!")
                 # replace tictactoe with X or O
                 for row in self.game_box.children[i].children[j].children:
                     for button in row.children:
                         button.enabled = False
                 if board_win is not None:
-                    logger.info(f"Player {placed} wins the main grid!")
                     self.main_window.info_dialog(f"{board_win} won!", f"{board_win} won!")
 
             # highlight next legal move, unless every move is legal
