@@ -5,7 +5,7 @@ class Game():
         self.active_player = 0
         self.main_game = TicTacToe()
         self.subgames = []
-        self.next_move = None
+        self.next_move = (None, None)
         self.completed_squares = []
         for i in range(3):
              self.subgames.append([])
@@ -18,8 +18,8 @@ class Game():
     def play(self, i, j, k, l, player=None):
         # only allow legal moves
         # moves are always legal if the next move is a completed square
-        if self.next_move is not None and (i, j) not in self.completed_squares and (i, j) != self.next_move:
-            print("ILLEGAL!!!!")
+        if None not in self.next_move and (i, j) not in self.completed_squares and (i, j) != self.next_move:
+            print("illegal move detected by game.py")
             return (None, None, None)
         
         if player is None:
@@ -37,7 +37,7 @@ class Game():
                 self.completed_squares.append((i, j))
                 self.main_game.play(i, j, player)
                 board_win = self.main_game.determine_victory()
-            self.next_move = (k, l) if (k, l) not in self.completed_squares else None
+            self.next_move = (k, l) if (k, l) not in self.completed_squares else (None, None)
         return (placed, subgame_win, board_win)
 
 # singleton instance

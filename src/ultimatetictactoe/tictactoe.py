@@ -45,7 +45,7 @@ class TicTacToe():
             
         # diagonal
         diag1 = [self.grid[0][0], self.grid[1][1], self.grid[2][2]]
-        diag2 = [self.grid[2][0], self.grid[1][1], self.grid[2][0]]
+        diag2 = [self.grid[2][0], self.grid[1][1], self.grid[0][2]]
 
         for diag in (diag1, diag2):
             winner = self.check_line(diag)

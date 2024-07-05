@@ -3,10 +3,13 @@ Tic Tac Toe within Tic Tac Toe
 """
 
 import toga
-from toga.constants import RED, TRANSPARENT
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 from .game import game
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class UltimateTicTacToe(toga.App):
@@ -18,39 +21,49 @@ class UltimateTicTacToe(toga.App):
         show the main window.
         """
 
-        # game objects
-        active_player = 0
-        # main_game = TicTacToe()
-        # subgames = []
-        # for i in range(3):
-        #      subgames.append([])
-        #      for j in range(3):
-        #           subgames[i].append(TicTacToe())
+        # logging setup
+        logging.basicConfig(filename=self.paths.logs / "tictactoe.log", level=logging.INFO)
 
         main_box = toga.Box(style=Pack(direction=COLUMN))
 
         # Button Handlers
         def press_button(button: toga.Button, i, j, k, l):
-                    # player = game.subgames[i][j].play(k, l, game.active_player)
-                    # if player is not None:
-                    #     button.text = player
-                    #     win = game.subgames[i][j].determine_victory()
-                    #     if win is not None:
-                    #         game_box.children[i].children[j].clear()
-                    #         game_box.children[i].children[j].add(toga.Label(player, style=Pack(width=150, height=150, alignment="center", font_size=100)))
-                    #         game.main_game.play(i, j, 0 if player == "X" else 1)
-                    #         big_win = game.main_game.determine_victory()
-                    #         if big_win is not None:
-                    #              self.main_window.info_dialog("Somebody won!", "Somebody won!")
+            # get legal move(s)
+            x, y = game.next_move
+
+            # catch illegal move
+            if x is not None and (i != x or j != y):
+                print("illegal from app.py")
+                return
+
+            # disable previous highlight
+            if x is not None:
+                for row in game_box.children[x].children[y].children:
+                    for style_button in row.children:
+                        style_button.style.update(background_color="transparent")
+                        style_button.refresh()
             placed, subgame_win, board_win = game.play(i, j, k, l)
             if placed:
                 button.text = placed
+                logger.info(f"Player {placed} played in {i}/{j} {k}/{l}")
+                logger.info(f"Grid: {game.subgames[i][j].grid}")
                 if subgame_win is not None:
+                    logger.info(f"Player {placed} wins grid {i}/{j}!")
                     # replace tictactoe with X or O
-                    game_box.children[i].children[j].clear()
-                    game_box.children[i].children[j].add(toga.Label(placed, style=Pack(width=150, height=150, alignment="center", font_size=100)))
+                    for row in game_box.children[i].children[j].children:
+                        for button in row.children:
+                            button.enabled = False
                     if board_win is not None:
+                        logger.info(f"Player {placed} wins the main grid!")
                         self.main_window.info_dialog(f"{board_win} won!", f"{board_win} won!")
+
+                # highlight next legal move, unless every move is legal
+                x, y = game.next_move
+                if x is not None:
+                    for row in game_box.children[x].children[y].children:
+                        for style_button in row.children:
+                            style_button.style.update(background_color="lightgreen")
+                            style_button.refresh()
 
         # Game info
         game_info_box = toga.Box()
@@ -74,7 +87,12 @@ class UltimateTicTacToe(toga.App):
                     for l in range(3):
                         button = toga.Button(
                             on_press=lambda widget, i=i, j=j, k=k, l=l: press_button(widget, i, j, k, l),
-                            style=Pack(width=50, height=50))
+                            style=Pack(width=50, 
+                                       height=50, 
+                                       font_size=20, 
+                                       font_weight="bold",
+                                       font_family="cursive",
+                                       text_align="center",))
                         button_row.add(button)
                 row.add(column)
 
