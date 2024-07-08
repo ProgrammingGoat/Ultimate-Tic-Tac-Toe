@@ -46,7 +46,8 @@ class Game():
             subgame_win = self.subgames[i][j].determine_victory()
             if subgame_win is not None:
                 self.completed_squares.append((i, j))
-                self.main_game.play(i, j, player)
+                if subgame_win != -1:
+                    self.main_game.play(i, j, player)
                 board_win = self.main_game.determine_victory()
             self.next_move = (k, l) if (k, l) not in self.completed_squares else (None, None)
         return (placed, subgame_win, board_win)

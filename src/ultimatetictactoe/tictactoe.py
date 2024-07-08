@@ -31,6 +31,7 @@ class TicTacToe():
         
     def determine_victory(self):
         winner = None
+
         # horizontal
         for row in self.grid:
             winner = self.check_line(row)
@@ -51,3 +52,7 @@ class TicTacToe():
             winner = self.check_line(diag)
             if winner is not None:
                 return winner
+            
+        # check for draw; if no winner is determined but all slots are filled it's a draw
+        if all(all(val is not None for val in row) for row in self.grid):
+            return -1
