@@ -76,7 +76,29 @@ class UltimateTicTacToe(toga.App):
                         button_row.add(button)
                 row.add(column)
 
+    def highlight_won_square(self, i, j, winner):
+        pattern = []
+
+        if winner == 0:
+            pattern = [(0,0), (0,2), (1,1), (2,0), (2,2)]
+        elif winner == 1:
+            pattern = [(0,0), (0,1), (0,2), (1,0), (1,2), (2,0), (2,1), (2,2)]
+
+        square = self.game_box.children[i].children[j]
+        
+        for x, y in pattern:
+            square.children[x].children[y].style.update(background_color="darkgray")
+
+        for row in square.children:
+            for button in row.children:
+                button.enabled = False
+                button.refresh()
+
+        
+
     def grid_button_handler(self, button: toga.Button, i, j, k, l):
+        if game.game_over == True:
+            return
         # get legal move(s)
         x, y = game.next_move
 
@@ -84,26 +106,26 @@ class UltimateTicTacToe(toga.App):
         if x is not None and (i != x or j != y):
             print("illegal from app.py")
             return
-
-        # disable previous highlight
-        if x is not None:
-            for row in self.game_box.children[x].children[y].children:
-                for style_button in row.children:
-                    style_button.style.update(background_color="transparent")
-                    style_button.refresh()
+        
         placed, subgame_win, board_win = game.play(i, j, k, l)
         if placed:
+            # disable previous highlight
+            if x is not None:
+                for row in self.game_box.children[x].children[y].children:
+                    for style_button in row.children:
+                        style_button.style.update(background_color="transparent")
+                        style_button.refresh()
             button.text = placed
             if subgame_win is not None:
                 # replace tictactoe with X or O
-                for row in self.game_box.children[i].children[j].children:
-                    for button in row.children:
-                        button.enabled = False
+                self.highlight_won_square(i, j, subgame_win)
                 if board_win is not None:
+                    game.game_over = True
                     if board_win == -1:
                         self.main_window.info_dialog("It's a draw!")
                     else:
-                        self.main_window.info_dialog(f"{board_win} won!", f"{board_win} won!")
+                        winner = "X" if board_win == 0 else "O"
+                        self.main_window.info_dialog(f"Congratulations!", f"Player {winner} won!")
 
             # highlight next legal move, unless every move is legal
             x, y = game.next_move
