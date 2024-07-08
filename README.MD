@@ -1,5 +1,4 @@
-Ultimate Tic Tac Toe
-====================
+# Ultimate Tic Tac Toe
 
 A variant of Tic-Tac-Toe where you play on 9 Tic-Tac-Toe grids at the same time.
 Whoever wins three small Tic-Tac-Toe grids in a row wins the large tic-tac-toe grid.
