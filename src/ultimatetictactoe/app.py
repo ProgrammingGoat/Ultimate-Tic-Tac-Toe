@@ -100,7 +100,10 @@ class UltimateTicTacToe(toga.App):
                     for button in row.children:
                         button.enabled = False
                 if board_win is not None:
-                    self.main_window.info_dialog(f"{board_win} won!", f"{board_win} won!")
+                    if board_win == -1:
+                        self.main_window.info_dialog("It's a draw!")
+                    else:
+                        self.main_window.info_dialog(f"{board_win} won!", f"{board_win} won!")
 
             # highlight next legal move, unless every move is legal
             x, y = game.next_move
