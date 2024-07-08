@@ -5,4 +5,4 @@ Whoever wins three small Tic-Tac-Toe grids in a row wins the large tic-tac-toe g
 
 Each move on the small grid determines where the next move on the large grid can be made.
 
-![https://i.imgur.com/Qs9G0en.png]
+![Screenshot](https://i.imgur.com/Qs9G0en.png)
